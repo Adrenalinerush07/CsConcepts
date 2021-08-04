@@ -2,69 +2,67 @@
 using namespace std;
 
 class Node {
-  public: 
-    int data;
-    Node* next = NULL;
+public: 
+  int data;
+  Node* next = NULL;
 
-    Node(int d){
-      data = d;
-    }
-
-    void append(int d){
-      Node* end = new Node(d);
-      Node* it = this;
-      while(it->next != NULL) {
-        it = it->next;
-      }
-      it->next = end;
-    }
-
-    void print() {
-      Node* it = this;
-      while(it != NULL){
-        cout<<it->data<<" ";
-        it = it->next;
-      }
-      cout<<endl;
-    }
+  Node(int d){
+    data = d;
+  }
 };
 
-Node* deleteNode(Node* head, int d) {
+void append(Node** head_ref, int d) {
+  Node* new_node = new Node(d);
+  new_node->next = *head_ref;
+  *head_ref = new_node;
+}
+
+void print(Node* head) {
   Node* cur = head;
+  while(cur != NULL) {
+    cout<<cur->data<<" ";
+    cur = cur->next;
+  }
+  cout<<endl;
+}
+
+void deleteNode(Node** head_ref, int d) {
+  Node* cur = *head_ref;
 
   if(cur->data == d){
-    return cur->next;
+    *head_ref = cur->next;
+    delete cur;
+    return;
   }
 
   while(cur->next != NULL) { 
     if(cur->next->data == d){
+      auto temp = cur->next;
       cur->next = cur->next->next;
-      return head;
+      delete temp;
+      return;
     }
     cur = cur->next;
   }
 
-  return head;
 }
 
 void solve(){
-  Node root(4);
-  root.append(10);
-  root.append(12);
-  root.append(13);
-  root.append(14);
 
-  cout<<"Before deleting the node: ";
-  root.print();
+  Node* head = NULL;
+  append(&head, 4);
+  append(&head, 10);
+  append(&head, 13);
+  append(&head, 20);
+  print(head);
 
   int x;
   cout<<"Enter the number you want to delete: ";
   cin>>x;
-  root = *deleteNode(&root, x);
+  deleteNode(&head, x);
 
-  cout<<endl;
   cout<<"After deleting the node: ";
-  root.print();
+  print(head);
 
 }
 
