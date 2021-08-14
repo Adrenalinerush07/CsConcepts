@@ -105,4 +105,4 @@ int32_t main(){
     for(int t=1;t<=tt;t++){
         solve();
     }
-} 
+}
